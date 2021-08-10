@@ -12,7 +12,8 @@ Terraform module which creates ECR repository resources on AWS.
 
 ```hcl
 module "php" {
-  source = "git::https://github.com/oanhnn/terraform-aws.git//modules/ecr"
+  source  = "rabiloo/ecr/aws"
+  version = "~> 0.1.0"
 
   name = "app-name/php"
   tags = {
