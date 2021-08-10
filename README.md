@@ -2,6 +2,12 @@
 
 Terraform module which creates ECR repository resources on AWS.
 
+## TODO
+
+- [ ] Update README.md
+- [ ] Add examples
+- [ ] Add Github Wrokflows
+
 ## Usage
 
 ```hcl
