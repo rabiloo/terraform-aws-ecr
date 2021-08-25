@@ -68,7 +68,7 @@ variable "readonly_access_principals" {
 }
 
 variable "tags" {
-  description = "The list of tags to apply to images in the repository"
+  description = "A map of tags to add to ECR repository resource"
   type        = map(string)
   default     = {}
 }
