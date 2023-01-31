@@ -1,48 +1,3 @@
-locals {
-  untagged_image_rule = [{
-    rulePriority = length(var.protected_tags) + 1
-    description  = "Expire images older than ${var.untagged_image_expiration_days} days"
-    selection = {
-      tagStatus   = "untagged"
-      countType   = "imageCountMoreThan"
-      countNumber = var.untagged_image_expiration_days
-    }
-    action = {
-      type = "expire"
-    }
-  }]
-
-  remove_old_image_rule = [{
-    rulePriority = length(var.protected_tags) + 2
-    description  = "Rotate images when reach ${var.max_image_count} images stored",
-    selection = {
-      tagStatus   = "any"
-      countType   = "imageCountMoreThan"
-      countNumber = var.max_image_count
-    }
-    action = {
-      type = "expire"
-    }
-  }]
-
-  protected_tag_rules = [
-    for index, tagPrefix in tolist(var.protected_tags) :
-    {
-      rulePriority = tonumber(index) + 1
-      description  = "Protects images tagged with ${tagPrefix}"
-      selection = {
-        tagStatus     = "tagged"
-        tagPrefixList = [tagPrefix]
-        countType     = "imageCountMoreThan"
-        countNumber   = 999999
-      }
-      action = {
-        type = "expire"
-      }
-    }
-  ]
-}
-
 resource "aws_ecr_repository" "this" {
   name                 = var.name
   image_tag_mutability = var.image_tag_mutability
@@ -62,17 +17,27 @@ resource "aws_ecr_repository" "this" {
   }, var.tags)
 }
 
-resource "aws_ecr_lifecycle_policy" "expire_images" {
-  repository = aws_ecr_repository.this.name
+module "lifecycle_policy" {
+  source = "./modules/ecr-lifecycle-policy"
 
-  policy = jsonencode({
-    rules = concat(local.protected_tag_rules, local.untagged_image_rule, local.remove_old_image_rule)
-  })
+  protected_tags                 = var.protected_tags
+  max_image_count                = var.max_image_count
+  untagged_image_expiration_days = var.untagged_image_expiration_days
 }
 
-data "aws_iam_policy_document" "empty" {}
+resource "aws_ecr_lifecycle_policy" "this" {
+  repository = aws_ecr_repository.this.name
+
+  policy = module.lifecycle_policy.policy_json
+
+  depends_on = [
+    module.lifecycle_policy,
+  ]
+}
 
 data "aws_iam_policy_document" "readonly" {
+  count = length(var.readonly_access_principals) > 0 ? 1 : 0
+
   statement {
     sid    = "ReadonlyAccess"
     effect = "Allow"
@@ -99,6 +64,8 @@ data "aws_iam_policy_document" "readonly" {
 }
 
 data "aws_iam_policy_document" "full" {
+  count = length(var.full_access_principals) > 0 ? 1 : 0
+
   statement {
     sid    = "FullAccess"
     effect = "Allow"
@@ -113,8 +80,8 @@ data "aws_iam_policy_document" "full" {
 }
 
 data "aws_iam_policy_document" "combined" {
-  source_json   = length(var.readonly_access_principals) == 0 ? data.aws_iam_policy_document.empty.json : data.aws_iam_policy_document.readonly.json
-  override_json = length(var.full_access_principals) == 0 ? data.aws_iam_policy_document.empty.json : data.aws_iam_policy_document.full.json
+  source_policy_documents   = data.aws_iam_policy_document.readonly[*].json
+  override_policy_documents = data.aws_iam_policy_document.full[*].json
 }
 
 resource "aws_ecr_repository_policy" "policy" {

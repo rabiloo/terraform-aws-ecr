@@ -22,28 +22,29 @@ module "php" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.52 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.2 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.52 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.52 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.52.0 |
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_lifecycle_policy"></a> [lifecycle\_policy](#module\_lifecycle\_policy) | ./modules/ecr-lifecycle-policy | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aws_ecr_lifecycle_policy.expire_images](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_lifecycle_policy) | resource |
+| [aws_ecr_lifecycle_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_lifecycle_policy) | resource |
 | [aws_ecr_repository.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
 | [aws_ecr_repository_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository_policy) | resource |
 | [aws_iam_policy_document.combined](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.empty](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.full](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.readonly](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
@@ -54,7 +55,7 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | The unique image name | `string` | n/a | yes |
 | <a name="input_encryption_type"></a> [encryption\_type](#input\_encryption\_type) | The encryption type for the repository. Must be one of: `AES256` or `KMS` | `string` | `"AES256"` | no |
 | <a name="input_full_access_principals"></a> [full\_access\_principals](#input\_full\_access\_principals) | Principal ARNs to provide with full access to the ECR | `list(string)` | `[]` | no |
-| <a name="input_image_tag_mutability"></a> [image\_tag\_mutability](#input\_image\_tag\_mutability) | The tag mutability setting for the repository. Must be one of: `MUTABLE` or `IMMUTABLE` | `string` | `"MUTABLE"` | no |
+| <a name="input_image_tag_mutability"></a> [image\_tag\_mutability](#input\_image\_tag\_mutability) | The tag mutability setting for the repository. Must be one of: `MUTABLE` or `IMMUTABLE` | `string` | `"IMMUTABLE"` | no |
 | <a name="input_kms_key"></a> [kms\_key](#input\_kms\_key) | The KMS key to use for encryption. Only used if encryption\_type is set to `KMS` | `string` | `""` | no |
 | <a name="input_max_image_count"></a> [max\_image\_count](#input\_max\_image\_count) | The maximum number of images to keep in the repository | `number` | `20` | no |
 | <a name="input_protected_tags"></a> [protected\_tags](#input\_protected\_tags) | The list of tags to protect from deletion | `list(string)` | `[]` | no |
@@ -92,5 +93,5 @@ If you would like to help take a look at the [list of issues](https://github.com
 ## License
 
 This project is released under the MIT License.   
-Copyright © 2021 [Rabiloo Co., Ltd](https://rabiloo.com)   
+Copyright © 2023 [Rabiloo Co., Ltd](https://rabiloo.com)   
 Please see [License File](LICENSE) for more information.
