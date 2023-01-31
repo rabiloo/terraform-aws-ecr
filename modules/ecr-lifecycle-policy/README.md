@@ -9,8 +9,8 @@ module "ecr_lifecycle_policy" {
   source  = "rabiloo/ecr/aws//modules/ecr-lifecycle-policy"
   version = "~> 0.2.0"
 
-  protected_tags = ["v", "latest"]
-  max_image_count = 20
+  protected_tags                 = ["v", "latest"]
+  max_image_count                = 20
   untagged_image_expiration_days = 1
 }
 ```
