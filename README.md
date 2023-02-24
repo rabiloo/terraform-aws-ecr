@@ -9,9 +9,9 @@ module "php" {
   source  = "rabiloo/ecr/aws"
   version = "~> 0.2.0"
 
-  name                  = "app-name/php"
-  image_tag_mutability  = "MUTABLE"
-  input_encryption_type = "AES256"
+  name                 = "app-name/php"
+  image_tag_mutability = "MUTABLE"
+  encryption_type      = "AES256"
 
   protected_tags                 = ["v", "latest"]
   max_image_count                = 20
@@ -36,7 +36,7 @@ module "php" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.52.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.55.0 |
 
 ## Modules
 
