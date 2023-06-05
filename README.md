@@ -7,7 +7,7 @@ Terraform module which creates ECR repository resources on AWS.
 ```hcl
 module "php" {
   source  = "rabiloo/ecr/aws"
-  version = "~> 0.2.0"
+  version = "~> 0.2.1"
 
   name                 = "app-name/php"
   image_tag_mutability = "MUTABLE"
@@ -30,7 +30,7 @@ module "php" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.2 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.52 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.52.0 |
 
 ## Providers
 
