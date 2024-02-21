@@ -17,22 +17,53 @@ resource "aws_ecr_repository" "this" {
   }, var.tags)
 }
 
-module "lifecycle_policy" {
-  source = "./modules/ecr-lifecycle-policy"
-
-  protected_tags                 = var.protected_tags
-  max_image_count                = var.max_image_count
-  untagged_image_expiration_days = var.untagged_image_expiration_days
+locals {
+  untagged_images_rules = [{
+    rulePriority = 20
+    description  = "Expire images older than ${var.untagged_image_expiration_days} days"
+    selection = {
+      tagStatus   = "untagged"
+      countType   = "imageCountMoreThan"
+      countNumber = var.untagged_image_expiration_days
+    }
+    action = {
+      type = "expire"
+    }
+  }]
+  more_images_rules = [{
+    rulePriority = 30
+    description  = "Rotate images when reach ${var.max_image_count} images stored",
+    selection = {
+      tagStatus   = "any"
+      countType   = "imageCountMoreThan"
+      countNumber = var.max_image_count
+    }
+    action = {
+      type = "expire"
+    }
+  }]
+  protected_prefix_tags_rules = length(var.protected_tags) == 0 ? [] : [
+    {
+      rulePriority = 10
+      description  = "Protects images tagged with prefix: ${join(", ", var.protected_tags)}"
+      selection = {
+        tagStatus     = "tagged"
+        tagPrefixList = var.protected_tags
+        countType     = "imageCountMoreThan"
+        countNumber   = 999999
+      }
+      action = {
+        type = "expire"
+      }
+    }
+  ]
 }
 
 resource "aws_ecr_lifecycle_policy" "this" {
+  count = var.create_ecr_lifecycle_policy ? 1 : 0
+
   repository = aws_ecr_repository.this.name
-
-  policy = module.lifecycle_policy.policy_json
-
-  depends_on = [
-    module.lifecycle_policy,
-  ]
+  policy     = jsonencode({ rules = concat(local.untagged_images_rules, local.more_images_rules, local.protected_prefix_tags_rules) })
 }
 
 data "aws_iam_policy_document" "readonly" {

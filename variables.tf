@@ -36,6 +36,11 @@ variable "scan_on_push" {
   default     = false
 }
 
+variable "create_ecr_lifecycle_policy" {
+  type    = bool
+  default = true
+}
+
 variable "max_image_count" {
   description = "The maximum number of images to keep in the repository"
   type        = number

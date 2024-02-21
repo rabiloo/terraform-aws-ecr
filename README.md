@@ -36,13 +36,11 @@ module "php" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.55.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.37.0 |
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_lifecycle_policy"></a> [lifecycle\_policy](#module\_lifecycle\_policy) | ./modules/ecr-lifecycle-policy | n/a |
+No modules.
 
 ## Resources
 
@@ -60,6 +58,7 @@ module "php" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | The unique image name | `string` | n/a | yes |
+| <a name="input_create_ecr_lifecycle_policy"></a> [create\_ecr\_lifecycle\_policy](#input\_create\_ecr\_lifecycle\_policy) | n/a | `bool` | `true` | no |
 | <a name="input_encryption_type"></a> [encryption\_type](#input\_encryption\_type) | The encryption type for the repository. Must be one of: `AES256` or `KMS` | `string` | `"AES256"` | no |
 | <a name="input_full_access_principals"></a> [full\_access\_principals](#input\_full\_access\_principals) | Principal ARNs to provide with full access to the ECR | `list(string)` | `[]` | no |
 | <a name="input_image_tag_mutability"></a> [image\_tag\_mutability](#input\_image\_tag\_mutability) | The tag mutability setting for the repository. Must be one of: `MUTABLE` or `IMMUTABLE` | `string` | `"IMMUTABLE"` | no |

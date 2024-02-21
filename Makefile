@@ -45,22 +45,21 @@ build: install lint validate docs ## Build module
 .PHONY: install
 install: ## Setup development environment
 	tflint --init
-	terraform init -upgrade
+	tofu init -upgrade
 
 .PHONY: lint
 lint: ## Lint Terraform files
-	terraform fmt --recursive
+	tofu fmt --recursive
 	tflint --format compact --module
 
 .PHONY: validate
 validate: ## Validate Terraform files
-	terraform fmt --check
-	terraform validate
+	tofu fmt --check
+	tofu validate
 
 .PHONY: docs
 docs: ## Generate README.md
 	terraform-docs markdown . \
-		--recursive \
 		--sort-by required \
 		--output-file README.md \
 		--output-mode insert
