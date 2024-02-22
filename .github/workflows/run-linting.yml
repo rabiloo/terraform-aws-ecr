@@ -13,31 +13,37 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - name: Setup Tofu
+        uses: opentofu/setup-opentofu@v1
 
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v4
 
-      - name: Cache plugin dir
-        uses: actions/cache@v3
+      - name: Cache terraform dir
+        uses: actions/cache@v4
         with:
-          path: ~/.tflint.d/plugins
+          path: ~/.terraform
+          key: terraform-${{ hashFiles('versions.tf') }}
+
+      - name: Cache tflint dir
+        uses: actions/cache@v4
+        with:
+          path: ~/.tflint.d
           key: tflint-${{ hashFiles('.tflint.hcl') }}
+
+      - name: Show version
+        run: |
+          tofu --version
+          tflint --version
 
       - name: Run init
         run: |
           tflint --init
-          terraform init -upgrade
-
-      - name: Show version
-        run: |
-          terraform --version
-          tflint --version
+          tofu init -upgrade
 
       - name: Run linting
         run: |
-          terraform fmt --recursive
+          tofu fmt --recursive
           tflint -f compact --module
 
       - name: Commit changes

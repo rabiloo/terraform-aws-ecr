@@ -22,13 +22,3 @@ updates:
       timezone: Asia/Ho_Chi_Minh
     labels:
       - dependencies
-
-  - package-ecosystem: terraform
-    directory: /modules/ecr-lifecycle-policy
-    schedule:
-      interval: weekly
-      day: monday
-      time: "12:00"
-      timezone: Asia/Ho_Chi_Minh
-    labels:
-      - dependencies

@@ -11,22 +11,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - name: Setup Tofu
+        uses: opentofu/setup-opentofu@v1
 
-      - name: Show Terraform version
-        run: terraform --version
-
-      - name: Cache plugin dir
-        uses: actions/cache@v3
+      - name: Cache terraform dir
+        uses: actions/cache@v4
         with:
           path: ~/.terraform
           key: terraform-${{ hashFiles('versions.tf') }}
 
-      - name: Init Terraform
-        run: terraform init -upgrade
+      - name: Show version
+        run: tofu --version
 
-      - name: Run Terraform validate
+      - name: Run init
+        run: tofu init -upgrade
+
+      - name: Run validate
         run: |
-          terraform fmt --check
-          terraform validate
+          tofu fmt --check
+          tofu validate
