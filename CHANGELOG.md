@@ -34,13 +34,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <!-- New Release notes will be placed here automatically -->
 ## [v0.3.0](https://github.com/rabiloo/terraform-aws-ecr/compare/v0.2.1...v0.3.0) - 2024-02-22
 
-### [v0.3.0](https://github.com/rabiloo/terraform-aws-ecr/compare/v0.2.1...v0.3.0) - 2024-02-22
-
-#### Added
+### Added
 
 - Add `create_ecr_lifecycle_policy` variable
 
-#### Removed
+### Removed
 
 - Sub-modules
 
