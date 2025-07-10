@@ -50,7 +50,7 @@ install: ## Setup development environment
 .PHONY: lint
 lint: ## Lint Terraform files
 	tofu fmt --recursive
-	tflint --format compact --module
+	tflint --format compact
 
 .PHONY: validate
 validate: ## Validate Terraform files
