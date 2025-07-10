@@ -34,14 +34,14 @@ data "aws_ecr_lifecycle_policy_document" "this" {
   # from being expired by the lifecycle policy.
   # This rule will not expire images with the specified tags.
   dynamic "rule" {
-    for_each = local.protected_tags
+    for_each = toset(local.protected_tags)
 
     content {
-      priority    = 10 + index(local.protected_tags, each.value)
-      description = "Protect images with tag pattern '${each.value}' from expiration"
+      priority    = 10 + tonumber(rule.key)
+      description = "Protect images with tag pattern '${rule.value}' from expiration"
       selection {
         tag_status       = "tagged"
-        tag_pattern_list = [each.value]
+        tag_pattern_list = [rule.value]
         count_type       = "sinceImagePushed"
         count_number     = 999999 # days
         count_unit       = "days"
