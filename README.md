@@ -7,13 +7,13 @@ Terraform module which creates ECR repository resources on AWS.
 ```hcl
 module "php" {
   source  = "rabiloo/ecr/aws"
-  version = "~> 0.3.0"
+  version = "~>0.4.0"
 
   name                 = "app-name/php"
   image_tag_mutability = "MUTABLE"
   encryption_type      = "AES256"
 
-  protected_tags                 = ["v", "latest"]
+  protected_tags                 = ["v*", "*-latest"]
   max_image_count                = 20
   untagged_image_expiration_days = 1
 
@@ -29,14 +29,8 @@ module "php" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.2 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.52.0 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.37.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~>1.10 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=6.0 |
 
 ## Modules
 
@@ -49,6 +43,7 @@ No modules.
 | [aws_ecr_lifecycle_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_lifecycle_policy) | resource |
 | [aws_ecr_repository.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
 | [aws_ecr_repository_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository_policy) | resource |
+| [aws_ecr_lifecycle_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ecr_lifecycle_policy_document) | data source |
 | [aws_iam_policy_document.combined](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.full](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.readonly](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -58,17 +53,18 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | The unique image name | `string` | n/a | yes |
-| <a name="input_create_ecr_lifecycle_policy"></a> [create\_ecr\_lifecycle\_policy](#input\_create\_ecr\_lifecycle\_policy) | n/a | `bool` | `true` | no |
+| <a name="input_create_ecr_lifecycle_policy"></a> [create\_ecr\_lifecycle\_policy](#input\_create\_ecr\_lifecycle\_policy) | Whether to create an ECR lifecycle policy for the repository. Must be one of: `true` or `false` | `bool` | `true` | no |
 | <a name="input_encryption_type"></a> [encryption\_type](#input\_encryption\_type) | The encryption type for the repository. Must be one of: `AES256` or `KMS` | `string` | `"AES256"` | no |
+| <a name="input_force_delete"></a> [force\_delete](#input\_force\_delete) | Whether to force delete the repository. Must be one of: `true` or `false` | `bool` | `false` | no |
 | <a name="input_full_access_principals"></a> [full\_access\_principals](#input\_full\_access\_principals) | Principal ARNs to provide with full access to the ECR | `list(string)` | `[]` | no |
 | <a name="input_image_tag_mutability"></a> [image\_tag\_mutability](#input\_image\_tag\_mutability) | The tag mutability setting for the repository. Must be one of: `MUTABLE` or `IMMUTABLE` | `string` | `"IMMUTABLE"` | no |
 | <a name="input_kms_key"></a> [kms\_key](#input\_kms\_key) | The KMS key to use for encryption. Only used if encryption\_type is set to `KMS` | `string` | `""` | no |
 | <a name="input_max_image_count"></a> [max\_image\_count](#input\_max\_image\_count) | The maximum number of images to keep in the repository | `number` | `20` | no |
-| <a name="input_protected_tags"></a> [protected\_tags](#input\_protected\_tags) | The list of tags to protect from deletion | `list(string)` | `[]` | no |
+| <a name="input_protected_tags"></a> [protected\_tags](#input\_protected\_tags) | The pattern list to match image tags to protect from deletion | `list(string)` | `[]` | no |
 | <a name="input_readonly_access_principals"></a> [readonly\_access\_principals](#input\_readonly\_access\_principals) | Principal ARNs to provide with readonly access to the ECR | `list(string)` | `[]` | no |
 | <a name="input_scan_on_push"></a> [scan\_on\_push](#input\_scan\_on\_push) | Whether to scan the repository on push. Must be one of: `true` or `false` | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to ECR repository resource | `map(string)` | `{}` | no |
-| <a name="input_untagged_image_expiration_days"></a> [untagged\_image\_expiration\_days](#input\_untagged\_image\_expiration\_days) | The number of days to keep untagged images in the repository | `number` | `1` | no |
+| <a name="input_untagged_image_expiration_days"></a> [untagged\_image\_expiration\_days](#input\_untagged\_image\_expiration\_days) | The number of days to keep untagged images in the repository | `number` | `5` | no |
 
 ## Outputs
 

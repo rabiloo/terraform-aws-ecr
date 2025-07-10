@@ -12,10 +12,22 @@ variable "name" {
   }
 }
 
+variable "tags" {
+  description = "A map of tags to add to ECR repository resource"
+  type        = map(string)
+  default     = {}
+}
+
 variable "image_tag_mutability" {
   description = "The tag mutability setting for the repository. Must be one of: `MUTABLE` or `IMMUTABLE`"
   type        = string
   default     = "IMMUTABLE"
+}
+
+variable "force_delete" {
+  description = "Whether to force delete the repository. Must be one of: `true` or `false`"
+  type        = bool
+  default     = false
 }
 
 variable "encryption_type" {
@@ -36,9 +48,13 @@ variable "scan_on_push" {
   default     = false
 }
 
+##############################
+# ECR lifecycle policy
+##############################
 variable "create_ecr_lifecycle_policy" {
-  type    = bool
-  default = true
+  description = "Whether to create an ECR lifecycle policy for the repository. Must be one of: `true` or `false`"
+  type        = bool
+  default     = true
 }
 
 variable "max_image_count" {
@@ -50,16 +66,18 @@ variable "max_image_count" {
 variable "untagged_image_expiration_days" {
   description = "The number of days to keep untagged images in the repository"
   type        = number
-  default     = 1
+  default     = 5
 }
 
 variable "protected_tags" {
-  description = "The list of tags to protect from deletion"
+  description = "The pattern list to match image tags to protect from deletion"
   type        = list(string)
   default     = []
 }
 
-
+##############################
+# ECR repository policy
+##############################
 variable "full_access_principals" {
   description = "Principal ARNs to provide with full access to the ECR"
   type        = list(string)
@@ -70,10 +88,4 @@ variable "readonly_access_principals" {
   description = "Principal ARNs to provide with readonly access to the ECR"
   type        = list(string)
   default     = []
-}
-
-variable "tags" {
-  description = "A map of tags to add to ECR repository resource"
-  type        = map(string)
-  default     = {}
 }

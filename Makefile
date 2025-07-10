@@ -61,5 +61,6 @@ validate: ## Validate Terraform files
 docs: ## Generate README.md
 	terraform-docs markdown . \
 		--sort-by required \
+		--hide providers \
 		--output-file README.md \
 		--output-mode insert
