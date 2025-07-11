@@ -44,7 +44,7 @@ jobs:
       - name: Run linting
         run: |
           tofu fmt --recursive
-          tflint -f compact --module
+          tflint -f compact
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
