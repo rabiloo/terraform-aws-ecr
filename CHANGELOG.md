@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/rabiloo/terraform-aws-ecr/compare/v0.4.0...master)
+## [Unreleased](https://github.com/rabiloo/terraform-aws-ecr/compare/v0.4.2...master)
 
 ### Added
 
@@ -32,6 +32,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Nothing
 
 <!-- New Release notes will be placed here automatically -->
+## [v0.4.2](https://github.com/rabiloo/terraform-aws-ecr/compare/v0.4.0...v0.4.2) - 2025-07-11
+
+### [Version 0.4.2](https://github.com/rabiloo/terraform-aws-ecr/releases/tag/v0.4.2) 2025-07-11
+
+#### Fix
+
+- Calculate rule priority for ECR lifecycle policy
+- Linting workflow
+
 ## [v0.4.0](https://github.com/rabiloo/terraform-aws-ecr/compare/v0.3.0...v0.4.0) - 2025-07-10
 
 ### [Version 0.4.0](https://github.com/rabiloo/terraform-aws-ecr/releases/tag/v0.4.0) 2025-07-10
