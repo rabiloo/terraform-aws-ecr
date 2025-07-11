@@ -37,7 +37,7 @@ data "aws_ecr_lifecycle_policy_document" "this" {
     for_each = toset(local.protected_tags)
 
     content {
-      priority    = 10 + tonumber(rule.key)
+      priority    = 10 + index(local.protected_tags, rule.value)
       description = "Protect images with tag pattern '${rule.value}' from expiration"
       selection {
         tag_status       = "tagged"
