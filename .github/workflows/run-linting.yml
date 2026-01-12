@@ -20,13 +20,13 @@ jobs:
         uses: terraform-linters/setup-tflint@v4
 
       - name: Cache terraform dir
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.terraform
           key: terraform-${{ hashFiles('versions.tf') }}
 
       - name: Cache tflint dir
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.tflint.d
           key: tflint-${{ hashFiles('.tflint.hcl') }}
