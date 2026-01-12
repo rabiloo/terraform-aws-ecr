@@ -17,7 +17,7 @@ jobs:
         uses: opentofu/setup-opentofu@v1
 
       - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v4
+        uses: terraform-linters/setup-tflint@v6
 
       - name: Cache terraform dir
         uses: actions/cache@v4
